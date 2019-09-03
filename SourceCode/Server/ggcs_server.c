@@ -214,7 +214,18 @@ void login(int clnt_sock, char * msg, int msg_len) {
 	// 만약 id, pw가 모두 일치하면 '1'을 보냄
 	if(strcmp(char_ptr_ptr[1], user_id) == 0 && strcmp(char_ptr_ptr[2], user_pw) == 0) {
 		printf("Login Success!\n");
-		send_msg_to_client(clnt_sock, &is_login_ok[1], 1);
+		char sendStr[100] = "1"; // '1'과 login한 유저의 모든 정보를 다 합쳐도 100자가 안된다고 가정
+		strcat(sendStr, " ");
+		strcat(sendStr, user_id);
+		strcat(sendStr, " ");
+		strcat(sendStr, user_pw);
+		strcat(sendStr, " ");
+		strcat(sendStr, user_name);
+		strcat(sendStr, " ");
+		strcat(sendStr, pet_name);
+		strcat(sendStr, " ");
+		strcat(sendStr, user_email);
+		send_msg_to_client(clnt_sock, sendStr, strlen(sendStr));
 	} else { // 만약 일치하지 않으면 '0'을 보냄
 		printf("Login Fail!\n");
 		send_msg_to_client(clnt_sock, &is_login_ok[0], 1);
