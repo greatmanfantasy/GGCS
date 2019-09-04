@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.view.KeyEvent;
 
+// 라즈베리파이3b+ 에서 UV4L을 통해 비디오 스트리밍 구현
 public class Monitoring extends AppCompatActivity {
 
     WebView web_view;

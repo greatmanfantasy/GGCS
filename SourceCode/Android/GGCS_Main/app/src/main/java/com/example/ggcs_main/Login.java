@@ -12,9 +12,6 @@ import android.widget.Toast;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.charset.Charset;
-
-import com.example.ggcs_main.TCPClient;
 
 public class Login extends AppCompatActivity {
 
@@ -27,7 +24,7 @@ public class Login extends AppCompatActivity {
         final EditText pw_text = (EditText)findViewById(R.id.login_pw_t_pw);
 
         // Info 버튼
-        Button info_button = (Button)findViewById(R.id.login_info_b_b);
+        Button info_button =   (Button)findViewById(R.id.login_info_b_b);
         info_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +76,14 @@ public class Login extends AppCompatActivity {
 
                 if (receive_string.charAt(0) == '1') { // receive login success flag from server
                     is_login_ok = true;
+                    String[] login_data = receive_string.split(" ");
+                    UserData userData = (UserData)getApplication();
+                    userData.setUserId(login_data[1]);
+                    userData.setUserPw(login_data[2]);
+                    userData.setUserName(login_data[3]);
+                    userData.setPetName(login_data[4]);
+                    userData.setUserEmail(login_data[5]);
+                    Log.d(this.getClass().getName(), userData.getUserId() + " " + userData.getUserPw() + " " + userData.getUserName() + " " + userData.getPetName() + " " + userData.getUserEmail());
                 } else { // receive login not success flag from server
                     Toast.makeText(getApplicationContext(), "Login Failed! (Wrong ID/PW)", Toast.LENGTH_LONG).show();
                 }
