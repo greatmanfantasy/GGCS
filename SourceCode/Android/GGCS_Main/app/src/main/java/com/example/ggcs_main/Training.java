@@ -37,7 +37,7 @@ public class Training extends AppCompatActivity {
         instruction_training_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent instruction_training_intent = new Intent(getApplicationContext(), Instruction_training.class);
+                Intent instruction_training_intent = new Intent(getApplicationContext(), InstructionTraining.class);
                 startActivity(instruction_training_intent);
             }
         });
@@ -47,7 +47,7 @@ public class Training extends AppCompatActivity {
         button_game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent button_game_intent = new Intent(getApplicationContext(), Button_game.class);
+                Intent button_game_intent = new Intent(getApplicationContext(), ButtonGame.class);
                 startActivity(button_game_intent);
             }
         });

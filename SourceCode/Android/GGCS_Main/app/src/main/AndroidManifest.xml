@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
-        android:name=".UserData"
+        android:name=".MyApp"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,18 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Button_game_setting"></activity>
-        <activity android:name=".Toilet_training_setting" />
-        <activity android:name=".Instruction_training_setting" />
-        <activity android:name=".Meal_setting" />
-        <activity android:name=".Button_game" />
-        <activity android:name=".Instruction_training" />
+        <activity android:name=".ToiletTrainingSetting" />
+        <activity android:name=".InstructionTrainingSetting" />
+        <activity android:name=".MealSetting" />
+        <activity android:name=".ButtonGame" />
+        <activity android:name=".InstructionTraining" />
         <activity android:name=".Setting" />
         <activity android:name=".History" />
         <activity android:name=".Info" />
-        <activity android:name=".Face_call" />
+        <activity android:name=".FaceCall" />
         <activity android:name=".Monitoring" />
-        <activity android:name=".Sign_in" />
+        <activity android:name=".SignIn" />
         <activity android:name=".Training" />
         <activity android:name=".Home" />
         <activity android:name=".Login">

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Toilet_training_setting">
+    tools:context=".ToiletTrainingSetting">
 
     <TextView
         android:id="@+id/toilet_training_setting_title_t_tv"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Instruction_training">
+    tools:context=".InstructionTraining">
 
     <TextView
         android:id="@+id/instruction_training_auto_repeat_title_t_tv"

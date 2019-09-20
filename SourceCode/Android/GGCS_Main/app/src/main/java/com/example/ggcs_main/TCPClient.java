@@ -1,6 +1,5 @@
 package com.example.ggcs_main;
 
-import android.util.Log;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -17,8 +16,8 @@ import java.nio.ByteBuffer;
 public class TCPClient extends Thread {
 
     // 서버의 IP & Port - 매번 IP, Port 확인 후 수정할 것! // 루프백 사용시 에러나는 경우 있음...
-    String server_host = "10.14.4.221";
-    int server_port = 9000;
+    String server_ip = "192.168.0.16";
+    int server_port = 7000;
     public static final int MAX_RECEIVE_BYTE_BUFFER_SIZE = 200;
 
     Socket socket = null; // 서버와 연결할 소켓
@@ -38,7 +37,7 @@ public class TCPClient extends Thread {
         try {
             // make a empty socket first, and connect after setReuseAddress setting (for 이전에 연결된 소켓이 해당 포트를 점유하고 있어도 바인딩하기 위해)
             socket = new Socket();
-            InetSocketAddress isa = new InetSocketAddress(server_host, server_port);
+            InetSocketAddress isa = new InetSocketAddress(server_ip, server_port);
             socket.setReuseAddress(true);
             socket.connect(isa);
 

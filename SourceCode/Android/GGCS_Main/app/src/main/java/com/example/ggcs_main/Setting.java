@@ -37,7 +37,7 @@ public class Setting extends AppCompatActivity {
         meal_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent meal_setting_intent = new Intent(getApplicationContext(), Meal_setting.class);
+                Intent meal_setting_intent = new Intent(getApplicationContext(), MealSetting.class);
                 startActivity(meal_setting_intent);
             }
         });
@@ -47,7 +47,7 @@ public class Setting extends AppCompatActivity {
         instruction_training_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent instruction_training_setting_intent = new Intent(getApplicationContext(), Instruction_training_setting.class);
+                Intent instruction_training_setting_intent = new Intent(getApplicationContext(), InstructionTrainingSetting.class);
                 startActivity(instruction_training_setting_intent);
             }
         });
@@ -57,19 +57,10 @@ public class Setting extends AppCompatActivity {
         toilet_training_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toilet_training_setting_intent = new Intent(getApplicationContext(), Toilet_training_setting.class);
+                Intent toilet_training_setting_intent = new Intent(getApplicationContext(), ToiletTrainingSetting.class);
                 startActivity(toilet_training_setting_intent);
             }
         });
 
-        // Button Game Setting 버튼
-        Button button_game_setting_button = (Button)findViewById(R.id.setting_button_game_setting_b_b);
-        button_game_setting_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent button_game_setting_intent = new Intent(getApplicationContext(), Button_game_setting.class);
-                startActivity(button_game_setting_intent);
-            }
-        });
     }
 }

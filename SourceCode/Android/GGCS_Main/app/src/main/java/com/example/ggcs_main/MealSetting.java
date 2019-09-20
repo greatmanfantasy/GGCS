@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Button_game_setting extends AppCompatActivity {
+public class MealSetting extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.button_game_setting);
+        setContentView(R.layout.meal_setting);
 
         // Previous 버튼
-        Button prev_button = (Button)findViewById(R.id.button_game_setting_prev_b_b);
+        Button prev_button = (Button)findViewById(R.id.meal_setting_prev_b_b);
         prev_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,7 +23,7 @@ public class Button_game_setting extends AppCompatActivity {
         });
 
         // Home 버튼
-        Button home_button = (Button)findViewById(R.id.button_game_setting_home_b_b);
+        Button home_button = (Button)findViewById(R.id.meal_setting_home_b_b);
         home_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

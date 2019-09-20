@@ -48,7 +48,7 @@ public class Home extends AppCompatActivity {
         face_call_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent face_call_intent = new Intent(getApplicationContext(), Face_call.class);
+                Intent face_call_intent = new Intent(getApplicationContext(), FaceCall.class);
                 startActivity(face_call_intent);
             }
         });
