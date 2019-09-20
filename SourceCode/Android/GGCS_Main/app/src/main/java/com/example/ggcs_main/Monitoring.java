@@ -15,7 +15,7 @@ public class Monitoring extends AppCompatActivity {
 
     WebView web_view;
 
-    String url = "https://10.14.5.141:8080/stream";
+    String url = "https://10.14.4.37:8080/stream";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

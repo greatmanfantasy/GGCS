@@ -15,7 +15,7 @@ public class FaceCall extends AppCompatActivity {
 
     WebView web_view;
 
-    String url = "https://10.14.5.141:8080/stream/webrtc";
+    String url = "https://10.14.4.37:8080/stream/webrtc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
