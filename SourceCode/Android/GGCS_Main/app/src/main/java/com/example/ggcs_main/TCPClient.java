@@ -16,8 +16,8 @@ import java.nio.ByteBuffer;
 public class TCPClient extends Thread {
 
     // 서버의 IP & Port - 매번 IP, Port 확인 후 수정할 것! // 루프백 사용시 에러나는 경우 있음...
-    String server_ip = "104.14.5.105";
-    int server_port = 7000;
+    String server_ip = "10.14.4.38";
+    int server_port = 8000;
     public static final int MAX_RECEIVE_BYTE_BUFFER_SIZE = 200;
 
     Socket socket = null; // 서버와 연결할 소켓

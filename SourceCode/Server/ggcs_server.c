@@ -22,7 +22,6 @@
 #define MEAL_SETTING_PAGE '7'
 #define INSTRUCTION_TRAINING_SETTING_PAGE '8'
 #define TOILET_TRAINING_SETTING_PAGE '9'
-#define BUTTON_GAME_SETTING_PAGE 'a'
 
 // client가 연결되면 client를 핸들할 thread의 main함수가 되는 함수
 // arg에는 client socket의 주소값이 전달됨
@@ -35,10 +34,13 @@ void send_msg_to_client(int clnt_sock, char * msg, int msg_len);
 void error_handling(char * msg);
 
 // 로그인 페이지 처리 함수
-void login(int clnt_sock, char * msg, int msg_len);
+void login(int clnt_sock, char * msg);
 
 // 회원가입 페이지 처리 함수
-void sign_in(int clnt_sock, char * msg, int msg_len);
+void sign_in(int clnt_sock, char * msg);
+
+// 버튼게임 페이지 처리 함수
+void button_game(int clnt_sock, char * msg);
 
 int clnt_cnt = 0; // 현재 연결된 client의 개수
 int clnt_socks[MAX_CLNT]; // 현재 연결된 client들의 소켓 file descriptor 값이 담긴 배열
@@ -53,6 +55,9 @@ char * user_name = NULL;
 char * pet_name = NULL;
 char * user_email = NULL;
 
+char * r_pi_ip = NULL;
+char * r_pi_port = NULL;
+
 // 디버깅용 임시코드
 void print_cur_user_info() {
 	printf("cur user info : %s %s %s %s %s\n", user_id, user_pw, user_name, pet_name, user_email);
@@ -65,10 +70,14 @@ int main(int argc, char *argv[]) {
 	pthread_t t_id;
 
 	// 만약 사용자가 서버프로그램을 잘못 사용했을 경우 사용법 출력
-	if(argc!=2) {
-		printf("Usage : %s <port>\n", argv[0]);
+	if(argc!=4) {
+		printf("Usage : %s <Port> <RaspberryPi IP> <RaspberryPi Port>\n", argv[0]);
 		exit(1);
 	}
+	r_pi_ip = (char *)calloc(strlen(argv[2]), sizeof(argv[2]));
+	r_pi_port = (char *)calloc(strlen(argv[3]), sizeof(argv[3]));	
+	strcpy(r_pi_ip, argv[2]);
+	strcpy(r_pi_port, argv[3]);
   
 	pthread_mutex_init(&mutx, NULL); // 뮤텍스 생성
 	serv_sock=socket(PF_INET, SOCK_STREAM, 0); // server socket 생성
@@ -124,17 +133,18 @@ void * handle_clnt(void * arg) {
 		switch(msg[0]) {
 			case LOGIN_PAGE:
 				printf("client : %s\n", "Login Page");
-				login(clnt_sock, msg, msg_len);
+				login(clnt_sock, msg);
 				break;
 			case SIGN_IN_PAGE:
 				printf("client : %s\n", "Sign In Page");
-				sign_in(clnt_sock, msg, msg_len);
+				sign_in(clnt_sock, msg);
 				break;
 			case INSTRUCTION_TRAINING_PAGE:
 				printf("client : %s\n", "Instruction Training Page");
 				break;
 			case BUTTON_GAME_PAGE:
 				printf("client : %s\n", "Button Game Page");
+				button_game(clnt_sock, msg);
 				break;
 			case HISTORY_PAGE:
 				printf("client : %s\n", "Login Page");
@@ -152,9 +162,6 @@ void * handle_clnt(void * arg) {
 				printf("client : %s\n", "Login Page");
 				break;
 			case TOILET_TRAINING_SETTING_PAGE:
-				printf("client : %s\n", "Login Page");
-				break;
-			case BUTTON_GAME_SETTING_PAGE:
 				printf("client : %s\n", "Login Page");
 				break;
 			default:
@@ -192,7 +199,7 @@ void error_handling(char * msg) {
 	exit(1);
 }
 
-void login(int clnt_sock, char * msg, int msg_len) {
+void login(int clnt_sock, char * msg) {
 	char is_login_ok[2] = {'0', '1'};
 
 	// 만약 설정된 id 정보가 없다면 회원가입된 정보가 없는 것이므로 로그인 실패처리
@@ -204,7 +211,7 @@ void login(int clnt_sock, char * msg, int msg_len) {
 
 	char * char_ptr_ptr[3]; // page flag, id, pw 
 	int i = 0;
-	char * ptr = strtok(msg, " "); // login page로부터 받은 문자열을 " " 공백 문자를 기준으로 자름, 포인터 반환
+	char * ptr = strtok(msg, " "); // page로부터 받은 문자열을 " " 공백 문자를 기준으로 자름, 포인터 반환
 
 	while (ptr != NULL) { // 자른 문자열이 나오지 않을 때까지 즉, 모두 잘랐을 때까지 반복
 		char_ptr_ptr[i++] = ptr; // 자른 문자열(page_flag, id, pw)을 char_ptr_ptr에 저장
@@ -232,12 +239,12 @@ void login(int clnt_sock, char * msg, int msg_len) {
 	}
 }
 
-void sign_in(int clnt_sock, char * msg, int msg_len) {
+void sign_in(int clnt_sock, char * msg) {
 	char is_sign_in_ok[2] = {'0', '1'};
 
 	char * char_ptr_ptr[6]; // page flag, id, pw, name, pet name, email 
 	int i = 0;
-	char * ptr = strtok(msg, " "); // sign in page로부터 받은 문자열을 " " 공백 문자를 기준으로 자름, 포인터 반환
+	char * ptr = strtok(msg, " "); // page로부터 받은 문자열을 " " 공백 문자를 기준으로 자름, 포인터 반환
 
 	while (ptr != NULL) { // 자른 문자열이 나오지 않을 때까지 즉, 모두 잘랐을 때까지 반복
 		char_ptr_ptr[i++] = ptr; // 자른 문자열(page_flag, id, pw, name, pet_name, email)을 char_ptr_ptr에 저장
@@ -257,11 +264,11 @@ void sign_in(int clnt_sock, char * msg, int msg_len) {
 		user_name = NULL;
 		pet_name = NULL;
 		user_email = NULL;
-		user_id = (char *)calloc(strlen(char_ptr_ptr[1]), sizeof(char));
-		user_pw = (char *)calloc(strlen(char_ptr_ptr[2]), sizeof(char));
-		user_name = (char *)calloc(strlen(char_ptr_ptr[3]), sizeof(char));
-		pet_name = (char *)calloc(strlen(char_ptr_ptr[4]), sizeof(char));
-		user_email = (char *)calloc(strlen(char_ptr_ptr[5]), sizeof(char));		
+		user_id = (char *)calloc(strlen(char_ptr_ptr[1]), sizeof(char_ptr_ptr[1]));
+		user_pw = (char *)calloc(strlen(char_ptr_ptr[2]), sizeof(char_ptr_ptr[2]));
+		user_name = (char *)calloc(strlen(char_ptr_ptr[3]), sizeof(char_ptr_ptr[3]));
+		pet_name = (char *)calloc(strlen(char_ptr_ptr[4]), sizeof(char_ptr_ptr[4]));
+		user_email = (char *)calloc(strlen(char_ptr_ptr[5]), sizeof(char_ptr_ptr[5]));		
 		strcpy(user_id, char_ptr_ptr[1]);
 		strcpy(user_pw, char_ptr_ptr[2]);
 		strcpy(user_name, char_ptr_ptr[3]);
@@ -274,4 +281,49 @@ void sign_in(int clnt_sock, char * msg, int msg_len) {
 		printf("Sign In Fail!\n");
 		send_msg_to_client(clnt_sock, &is_sign_in_ok[0], 1);
 	}
+}
+
+void button_game(int clnt_sock, char * msg) {
+	char * char_ptr_ptr[4]; // page flag, button flag, level, interval time 
+	int i = 0;
+	char * ptr = strtok(msg, " "); // page로부터 받은 문자열을 " " 공백 문자를 기준으로 자름, 포인터 반환
+
+	while (ptr != NULL) { // 자른 문자열이 나오지 않을 때까지 즉, 모두 잘랐을 때까지 반복
+		char_ptr_ptr[i++] = ptr; // 자른 문자열(page_flag, id, pw)을 char_ptr_ptr에 저장
+    	ptr = strtok(NULL, " "); // 다음 문자열을 잘라서 포인터를 반환
+	}
+
+	// 라즈베리파이의 서버에 클라이언트로서 연결하기 위한 설정부
+	int sock;
+	struct sockaddr_in serv_addr;
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	memset(&serv_addr, 0, sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_addr.s_addr = inet_addr(r_pi_ip);
+	serv_addr.sin_port = htons(atoi(r_pi_port));
+	if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) {
+		error_handling("connect() error");
+	}
+
+	// 라즈베리파이와 연결됐으니 데이터 전달 (button flag, level, interval time)
+	if(strcmp(char_ptr_ptr[1], "0") == 0) { // start button
+		char level = char_ptr_ptr[2][0];
+		// 레벨 1,2,3에 따라 라즈베리파이로 실행 메세지 보내기
+		printf("%c\n", level);
+		// 라즈베리파이에 메세지 전달
+		write(sock, msg, strlen(msg));
+		// 안드로이드에 잘 됐다고 메세지 전달
+		send_msg_to_client(clnt_sock, "Button Game Start Success!", 26);
+
+	} else if (strcmp(char_ptr_ptr[1], "1") == 0) { // auto start button
+		;
+	} else if (strcmp(char_ptr_ptr[1], "2") == 0) { // auto stop button
+		;
+	}
+	//
+
+	// 라즈베리파이 서버와 연결을 마쳤으니 소켓 닫기
+	close(sock);
+
+	
 }
